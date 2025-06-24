@@ -1,6 +1,5 @@
 "use client";
 
-import { BarChart3, Users, CalendarDays, Settings, Home } from "lucide-react";
 import Link from "next/link";
 import {
   Sidebar,
@@ -11,9 +10,38 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
 } from "@/components/ui/sidebar";
+import { BarChart3, Users, CalendarDays, Settings, Home } from "lucide-react";
+import { SidebarLink } from "./sidebar-link";
+
+const sidebarLinks = [
+  {
+    href: "/dashboard",
+    label: "Dashboard",
+    icon: BarChart3,
+    exact: true,
+  },
+  {
+    href: "/dashboard/estudiantes",
+    label: "Estudiantes",
+    icon: Users,
+  },
+  {
+    href: "/dashboard/cursos",
+    label: "Cursos",
+    icon: CalendarDays,
+  },
+  {
+    href: "/dashboard/sesiones",
+    label: "Sesiones",
+    icon: CalendarDays,
+  },
+  {
+    href: "/dashboard/configuracion",
+    label: "Configuración",
+    icon: Settings,
+  },
+];
 
 export function AppSidebar() {
   return (
@@ -31,38 +59,9 @@ export function AppSidebar() {
           <SidebarGroupLabel>Navegación</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Dashboard">
-                  <Link href="/">
-                    <BarChart3 className="h-4 w-4" />
-                    <span>Dashboard</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild isActive tooltip="Estudiantes">
-                  <Link href="/">
-                    <Users className="h-4 w-4" />
-                    <span>Estudiantes</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Clases">
-                  <Link href="/">
-                    <CalendarDays className="h-4 w-4" />
-                    <span>Clases</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuButton asChild tooltip="Configuración">
-                  <Link href="/">
-                    <Settings className="h-4 w-4" />
-                    <span>Configuración</span>
-                  </Link>
-                </SidebarMenuButton>
-              </SidebarMenuItem>
+              {sidebarLinks.map((item) => (
+                <SidebarLink key={item.href} {...item} />
+              ))}
             </SidebarMenu>
           </SidebarGroupContent>
         </SidebarGroup>

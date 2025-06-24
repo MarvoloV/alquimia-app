@@ -8,10 +8,9 @@ export default async function AuthLayout({
 }) {
   const supabase = await createClient();
 
-  const { data, error } = await supabase.auth.getUser();
-
-  if (error || !!data?.user) {
-    redirect("/dashboard");
+  const { data } = await supabase.auth.getUser();
+  if (data.user) {
+    redirect("/dashboard/estudiantes");
   }
 
   return <>{children}</>;

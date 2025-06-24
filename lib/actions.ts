@@ -4,6 +4,7 @@ import { z } from "zod";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { convertKeysToCamelCase } from "./snakeToCamel";
+import { Student } from "./data";
 
 const StudentSchema = z.object({
   id: z.string().optional(),
@@ -29,7 +30,7 @@ export type StudentFormState = {
 };
 
 export async function createStudent(
-  prevState: StudentFormState,
+  _prevState: StudentFormState,
   formData: FormData,
 ): Promise<StudentFormState> {
   const supabase = await createClient();
@@ -72,7 +73,7 @@ export async function createStudent(
 }
 
 export async function updateStudent(
-  prevState: StudentFormState,
+  _prevState: StudentFormState,
   formData: FormData,
 ): Promise<StudentFormState> {
   const supabase = await createClient();
@@ -180,4 +181,19 @@ export async function getStudents(
       pageSize,
     },
   };
+}
+export async function getAllStudents(): Promise<Student[]> {
+  const supabase = await createClient();
+
+  const { data, error } = await supabase
+    .from("users")
+    .select("*")
+    .order("id", { ascending: false });
+
+  if (error) {
+    console.error("Error fetching all students:", error.message);
+    return [];
+  }
+
+  return convertKeysToCamelCase(data);
 }
